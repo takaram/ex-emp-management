@@ -1,4 +1,4 @@
-package jp.co.sample.service;
+package jp.co.sample.form;
 
 /**
  * 管理者の新規登録用のフォームクラス
