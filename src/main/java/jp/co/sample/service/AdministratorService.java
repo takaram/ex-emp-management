@@ -22,10 +22,21 @@ public class AdministratorService {
 
     /**
      * 管理者情報を挿入する.
-     * 
+     *
      * @param administrator 管理者情報
      */
     public void insert(Administrator administrator) {
         administratorRepository.insert(administrator);
+    }
+
+    /**
+     * メールアドレスとパスワードを使ってログインする.
+     *
+     * @param mailAddress メールアドレス
+     * @param password    パスワード
+     * @return メールアドレスとパスワードが一致するAdministratorオブジェクト
+     */
+    public Administrator login(String mailAddress, String password) {
+        return administratorRepository.findByMailAddressAndPassword(mailAddress, password);
     }
 }
