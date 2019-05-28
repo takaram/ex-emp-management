@@ -91,7 +91,7 @@ public class AdministratorController {
      *
      * @param form          リクエストパラメータを受け取るフォーム
      * @param bindingResult エラー情報を保持するオブジェクト
-     * @return /employee/showListへのフォワード
+     * @return 従業員一覧画面へのフォワード
      */
     @RequestMapping("/login")
     public String login(LoginForm form, BindingResult bindingResult) {
