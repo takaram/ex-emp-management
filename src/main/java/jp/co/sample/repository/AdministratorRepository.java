@@ -21,7 +21,7 @@ public class AdministratorRepository {
     /** AdministratorのRowMapper */
     private static final RowMapper<Administrator> ADMINISTRATOR_ROW_MAPPER = (rs, i) -> {
         return new Administrator(
-                rs.getInt("id"), rs.getString("name"), rs.getString("mailAddress"), rs.getString("password"));
+                rs.getInt("id"), rs.getString("name"), rs.getString("mail_address"), rs.getString("password"));
     };
 
     /** DBアクセス用のテンプレート */
