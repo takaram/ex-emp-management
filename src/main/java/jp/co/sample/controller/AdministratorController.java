@@ -1,5 +1,8 @@
 package jp.co.sample.controller;
 
+import java.security.SecureRandom;
+import java.util.Random;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
@@ -58,6 +61,8 @@ public class AdministratorController {
      */
     @RequestMapping("/toInsert")
     public String toInsert() {
+        String token = getRandomString();
+        session.setAttribute("token", token);
         return "administrator/insert";
     }
 
@@ -69,11 +74,37 @@ public class AdministratorController {
      */
     @RequestMapping("/insert")
     public String insert(InsertAdministratorForm form) {
+        // 二重サブミット対策
+        String token = form.getToken();
+        if (token != null && token.equals(session.getAttribute("token"))) {
+            session.removeAttribute("token");
+        } else {
+            return "administrator/error";
+        }
+
         Administrator administrator = new Administrator();
         BeanUtils.copyProperties(form, administrator);
         administratorService.insert(administrator);
 
         return "redirect:/";
+    }
+
+    /**
+     * ランダムな文字列を生成する. 文字列の長さは32文字です。
+     *
+     * @return 生成した文字列
+     */
+    private String getRandomString() {
+        Random random = new SecureRandom();
+        StringBuilder builder = new StringBuilder();
+        String source = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (int i = 0; i < 32; i++) {
+            // sourceからランダムに1文字選んでStringBuilderに入れる
+            char c = source.charAt(random.nextInt(source.length()));
+            builder.append(c);
+        }
+        return builder.toString();
     }
 
     /**
