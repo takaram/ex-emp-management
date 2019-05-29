@@ -22,6 +22,9 @@ public class InsertAdministratorForm {
     @Size(min = 6, message = "パスワードは6文字以上必要です")
     private String password;
 
+    /** 二重サブミット対策用トークン */
+    private String token;
+
     public String getName() {
         return name;
     }
@@ -44,6 +47,14 @@ public class InsertAdministratorForm {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     @Override
