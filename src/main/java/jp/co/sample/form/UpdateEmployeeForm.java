@@ -11,6 +11,10 @@ public class UpdateEmployeeForm {
     /** 扶養人数 */
     private String dependentsCount;
 
+    public Integer getDependentsCountAsInteger() {
+        return Integer.valueOf(dependentsCount);
+    }
+
     public String getId() {
         return id;
     }

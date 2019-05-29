@@ -61,4 +61,19 @@ public class EmployeeController {
 
         return "employee/detail";
     }
+
+    /**
+     * 従業員情報を更新する.
+     *
+     * @param form リクエストパラメータを受け取るフォーム
+     * @return 従業員一覧画面へのリダイレクト
+     */
+    @RequestMapping("/update")
+    public String update(UpdateEmployeeForm form) {
+        Employee employee = employeeService.load(Integer.valueOf(form.getId()));
+        employee.setDependentsCount(form.getDependentsCountAsInteger());
+        employeeService.update(employee);
+
+        return "redirect:/employee/showList";
+    }
 }
