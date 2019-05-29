@@ -2,6 +2,7 @@ package jp.co.sample.controller;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -63,6 +64,28 @@ public class EmployeeController {
     }
 
     /**
+     * 従業員情報の編集画面を表示する
+     *
+     * @param id    編集する従業員情報のID
+     * @param model リクエストスコープ
+     * @return 編集画面のパス
+     */
+    @RequestMapping("edit")
+    public String edit(String id, Model model) {
+        Employee employee = employeeService.showDetail(Integer.valueOf(id));
+        UpdateEmployeeForm form = setUpUpdateEmployeeForm();
+
+        BeanUtils.copyProperties(employee, form);
+        form.setId(employee.getId());
+        form.setHireDate(employee.getHireDate());
+        form.setSalary(employee.getSalary());
+        form.setDependentsCount(employee.getDependentsCount());
+
+        model.addAttribute("updateEmployeeForm", form);
+        return "employee/edit";
+    }
+
+    /**
      * 従業員情報を更新する.
      *
      * @param form リクエストパラメータを受け取るフォーム
@@ -70,10 +93,14 @@ public class EmployeeController {
      */
     @RequestMapping("/update")
     public String update(UpdateEmployeeForm form) {
-        Employee employee = employeeService.load(Integer.valueOf(form.getId()));
-        employee.setDependentsCount(form.getDependentsCountAsInteger());
-        employeeService.update(employee);
+        Employee employee = employeeService.load(form.getIdAsInteger());
 
+        BeanUtils.copyProperties(form, employee, new String[] {"image"});
+        employee.setHireDate(form.getHireDateAsDate());
+        employee.setSalary(form.getSalaryAsInteger());
+        employee.setDependentsCount(form.getDependentsCountAsInteger());
+
+        employeeService.update(employee);
         return "redirect:/employee/showList";
     }
 }
